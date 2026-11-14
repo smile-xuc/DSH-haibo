@@ -23,11 +23,11 @@ v0 试验默认（允许破损）：
 
 | 项 | 值 |
 |---|---|
-| DSH tip | **`0.2.1-rc.5`**（tag `dsh-v0.2.1-rc.5`） |
+| DSH tip | **`0.2.2-rc.3`**（tag `dsh-v0.2.2-rc.3`） |
 | Source | 只开 **GitHub**。飞书插件保持关闭 |
 | 接单 | **`acceptMode: observe`**（评估并记下研判，不接单） |
 
-原型 `SETUP.md` 的示例命令仍写 `@deepseek-ai/dsh@0.2.1-rc.3`。本试验改用 `0.2.1-rc.5`。原型 `engines.dsh` 是 `^0.2.1-alpha.2`，默认 semver 已包含 `0.2.1-rc.5`。
+原型 `SETUP.md` 的示例命令仍写 `@deepseek-ai/dsh@0.2.1-rc.3`。家庭主机上的 DSH tip 现在是 `0.2.2-rc.3`。原型 `engines.dsh` 是 `^0.2.1-alpha.2`，默认 semver **不**包含 `0.2.2-rc.3`。这次对齐没有安装原型，也没有在 `0.2.2-rc.3` 上重跑隔离试验。
 
 原型 [README](https://github.com/deepseek-ai/dsh-superagent-prototype/blob/main/README.md) 的免责声明：这是研究代码，不是正式产品，也**不等于**文章 *Exploring Super-agent Design: Towards a More Autonomous Agent System* 里的实现。文章里的一些设计尚未做进原型。
 
@@ -51,11 +51,11 @@ v0 试验默认（允许破损）：
 
 ## CI tip 与 cordis
 
-haibo 的 plugin-behavior CI 把 `@deepseek-ai/dsh-*` 钉在 **`0.2.1-rc.5`**。对照 tag `dsh-v0.2.1-rc.5` 的已发布 peer：这些包要 `@deepseek-ai/cordis@~4.0.5`，`@deepseek-ai/schemastery@~3.18.5`，`dsh-llm` / `dsh-storage-domain` 依赖 `zod@4.4.3`。schemastery `3.18.5` 依赖 `@deepseek-ai/cosmokit@~1.8.6`。因此 CI 里的 cordis `4.0.5`、cosmokit `1.8.6`、schemastery `3.18.5`、zod `4.4.3` **保持不动**。npm 上的 `cordis@4.0.6-alpha.1` 不在 `~4.0.5` 里，也不追。
+haibo 的 plugin-behavior CI 把 `@deepseek-ai/dsh-*` 钉在 **`0.2.2-rc.3`**。对照 tag `dsh-v0.2.2-rc.3` 的已发布 peer：这些包要 `@deepseek-ai/cordis@~4.1.0`，`@deepseek-ai/schemastery@~3.19.0`，`dsh-llm` / `dsh-storage-domain` 依赖 `zod@4.6.6`。schemastery `3.19.0` 依赖 `@deepseek-ai/cosmokit@~1.9.0`。因此 CI 里是 cordis `4.1.0`、cosmokit `1.9.0`、schemastery `3.19.0`、zod `4.6.6`。`@deepseek-ai/dsh-llm@0.2.2-rc.3` 把 `@deepseek-ai/dsh-error@0.2.2-rc.3` 放进 peerDependencies，plugin-behavior 要显式装上，否则 `import '@deepseek-ai/dsh-tools'` 在 Node 里解析失败。出处是上游 `60d811de43a819eb4317966845c9fc677c41b50d`（`vendor/cordis/package.json` 等到 4.1.0 / 3.19.0 / 1.9.0）和 `6b8d86800848fe72f2e59a074fa17204368e8949`（zod 4.6.6）。
 
-插件 `peerDependencies` 里的 `^0.2.1-alpha.1` 已经匹配 `0.2.1-rc.5`（同一 `0.2.1` 预发布元组，不需要 `includePrerelease`），所以没有再追加 `|| ^0.2.1-rc.5`，也没有写入 `0.2.2-alpha`。
+插件 `peerDependencies` 保留历史档 `^0.1.1-rc.2 || ^0.1.2-rc.1 || ^0.2.0-rc.2 || ^0.2.1-alpha.1`，并追加 `|| ^0.2.2-rc.3`。`^0.2.1-alpha.1` 已经覆盖整条 `0.2.1`（含 `0.2.1-rc.5`），不再为每个 `0.2.1-rc.N` 加一档。`^0.2.1-alpha.1` 不匹配 `0.2.2-rc.3`。
 
-隔离试验另有一条 peer，**不**回写到 haibo：原型 `package.json` 把 `@deepseek-ai/cordis` 和 `@deepseek-ai/schemastery` 钉成精确的 `4.0.5-alpha.1` 与 `3.18.5-alpha.1`。稳定版 `4.0.5` / `3.18.5` 满足不了这两条。试验接受破损；不要为此把 alpha cordis 塞进 haibo 的标记块或 CI。
+隔离试验另有一条 peer，**不**回写到 haibo：原型 `package.json` 把 `@deepseek-ai/cordis` 和 `@deepseek-ai/schemastery` 钉成精确的 `4.0.5-alpha.1` 与 `3.18.5-alpha.1`。`0.2.2-rc.3` 的稳定版 `4.1.0` / `3.19.0` 满足不了这两条，原型 `engines.dsh` 的 `^0.2.1-alpha.2` 也不包含这个 tip。试验接受破损；不要为此把 alpha cordis 塞进 haibo 的标记块或 CI，也不要安装 `deepseek-ai/dsh-superagent-prototype`。
 
 <a id="host-install"></a>
 
@@ -67,16 +67,16 @@ haibo 的 plugin-behavior CI 把 `@deepseek-ai/dsh-*` 钉在 **`0.2.1-rc.5`**。
 
 ### 装 haibo 的前提
 
-- Node.js 22。本仓库 CI（`.github/workflows/ci.yml`）用 Node 22。`package.json` 的 `engines.node` 是 `>=20`，`bin/install.mjs` 不检查 Node 版本。隔离试验更严，见下面「隔离 profile 的前提」。
+- Node.js **`>=24.9`**。`@deepseek-ai/dsh@0.2.2-rc.3` 的 `engines.node` 是这个下限。本仓库 CI（`.github/workflows/ci.yml`）仍用 Node 22 跑 haibo 自己的脚本；`package.json` 的 `engines.node` 是 `>=20`，`bin/install.mjs` 不检查 Node 版本。隔离试验更严，见下面「隔离 profile 的前提」。
 - git。安装器不调用 git。原型要求 git 2.32+，那一条只约束试验，不约束 `node bin/install.mjs`。
-- DSH **`0.2.1-rc.5`**。命令与下文试验相同，全局安装会把这台机器上的 `dsh` 指到这个 tip：
+- DSH **`0.2.2-rc.3`**。全局安装会把这台机器上的 `dsh` 指到这个 tip：
 
 ```sh
-npm install -g @deepseek-ai/dsh@0.2.1-rc.5
+npm install -g @deepseek-ai/dsh@0.2.2-rc.3
 dsh --version
 ```
 
-`dsh --version` 的输出里应有 `0.2.1-rc.5`。不要装成 `0.2.2-alpha`，也不要改用原型 `SETUP.md` 示例里的 `0.2.1-rc.3`。
+`dsh --version` 的输出里应有 `0.2.2-rc.3`。不要改用原型 `SETUP.md` 示例里的 `0.2.1-rc.3`，也不要停在 `0.2.1-rc.5`。
 
 ### 克隆或更新
 
@@ -101,7 +101,7 @@ export HAIBO="$PWD"
 
 安装器只认已经存在的 profile 目录。默认 profile 名是 `web`，路径是 `$DSH_HOME/profiles/web`（`DSH_HOME` 默认 `~/.dsh`）。目录不存在时，`install` 抛出 `profile 'web' not found at ...`，不会创建 profile。
 
-上游 CLI 把 `web` 当作发行版自带的 profile 名，不能拿它当 `--from-default-profile` 的目标（tag `dsh-v0.2.1-rc.5` 的 `apps/cli/reference/README.md`）。本次没有在空的 `DSH_HOME` 上确认 `$DSH_HOME/profiles/web` 是全局安装后就有，还是第一次 `dsh web` 才有。若安装器报 profile 不存在，先在这台主机执行：
+上游 CLI 把 `web` 当作发行版自带的 profile 名，不能拿它当 `--from-default-profile` 的目标（tag `dsh-v0.2.2-rc.3` 的 `apps/cli/reference/README.md`：目标名不能是已发行的 profile 名）。本次没有在空的 `DSH_HOME` 上确认 `$DSH_HOME/profiles/web` 是全局安装后就有，还是第一次 `dsh web` 才有。若安装器报 profile 不存在，先在这台主机执行：
 
 ```sh
 dsh web --dump-config
@@ -160,9 +160,9 @@ UI bundle：`plugins/dsh-muse-ui/lib/client.js` 随仓库提交。它缺失时 `
 | 执行器准备命令 | 空字符串。v0 不写入上游那条 worktree 命令 |
 | 自动合并 | 不配置合并用的 CLI，不把模式改成 `auto` |
 | 仓库级旁路开关 | `observeIssues` / `observePulls` / `observeComments` / `observeCi` 全部 `false`（只收点名通知） |
-| DSH | `0.2.1-rc.5`，tag `dsh-v0.2.1-rc.5` |
+| DSH | `0.2.2-rc.3`，tag `dsh-v0.2.2-rc.3` |
 
-下文命令对照原型提交 `8c32a9dc5d72c033816c6a8110b37f40cf94fba4`。若 `main` 上的 `SETUP.md` 或 `006-deployment.md` 改了安装块，以那两份为准，同时保持上表。示例里的 `@deepseek-ai/dsh@0.2.1-rc.3` 改成 `0.2.1-rc.5`。不要改成 `0.2.2-alpha`。
+下文命令对照原型提交 `8c32a9dc5d72c033816c6a8110b37f40cf94fba4`。若 `main` 上的 `SETUP.md` 或 `006-deployment.md` 改了安装块，以那两份为准，同时保持上表。示例里的 `@deepseek-ai/dsh@0.2.1-rc.3` 改成 `0.2.2-rc.3`。不要把原型装进 haibo。
 
 ### GitHub 权限：政策收在一个仓库，上游 setup 仍检查 push
 
@@ -200,14 +200,14 @@ gh-agent api repos/smile-xuc/DSH-haibo --jq '{name: .full_name, push: .permissio
 
 家庭主机需要：
 
-- Node.js 22.19+ 或 24+（原型 `engines.node`。上面装 haibo 写的是 Node 22；原型比 `package.json` 的 `>=20` 更严）
+- Node.js `>=24.9`（上面装 haibo 与 DSH `0.2.2-rc.3` 的下限；原型 `engines.node` 写的是 22.19+ 或 24+）
 - pnpm。原型 `packageManager` 是 `pnpm@11.7.0`。可用 `corepack enable && corepack prepare pnpm@11.7.0 --activate`
 - git 2.32+、Python 3.8+、tmux、curl、jq
 - GitHub CLI `gh` 2.48+
 - 操作者自己的 `gh auth login`（用来克隆，以及作为允许发起的登录名）。这与第 5 节的 `gh-agent` 包装是两套 `GH_CONFIG_DIR`
 - DSH 模型供应商配在 **superagent** profile 本地。新建 profile 来自自带 web 模板，不会带上默认 profile 里的模型配置。密钥留在本机
 
-cordis / schemastery 的 alpha 精确 peer 见 [CI tip 与 cordis](#ci-tip)。`pnpm install` 用的是原型锁文件里的 alpha；跑在 `0.2.1-rc.5` 里时，稳定版 `4.0.5` / `3.18.5` 对不上。面板报插件不兼容或加载失败，是这项已知破损。不要把 alpha cordis 写进 haibo 的 CI 或默认 profile。
+cordis / schemastery 的 alpha 精确 peer 见 [CI tip 与 cordis](#ci-tip)。`pnpm install` 用的是原型锁文件里的 alpha；跑在 `0.2.2-rc.3` 里时，稳定版 `4.1.0` / `3.19.0` 对不上原型的 `4.0.5-alpha.1` / `3.18.5-alpha.1`。面板报插件不兼容或加载失败，是这项已知破损。不要把 alpha cordis 写进 haibo 的 CI 或默认 profile。这次没有安装原型。
 
 ### 确认本仓库路径
 
@@ -226,12 +226,12 @@ export HAIBO="$PWD"
 ```sh
 export DSH_HOME="${DSH_HOME:-$HOME/.dsh}"
 test ! -e "$DSH_HOME/profiles/superagent"
-npm install -g @deepseek-ai/dsh@0.2.1-rc.5
+npm install -g @deepseek-ai/dsh@0.2.2-rc.3
 dsh --version
 dsh superagent --from-default-profile web --dump-config > /dev/null
 ```
 
-`dsh --version` 应包含 `0.2.1-rc.5`。这条全局安装把主机上的 `dsh` 指到 haibo 文档已钉住的同一个 tip。`--from-default-profile web` 复制的是发行版里的 web 模板，然后 `--dump-config` 打印配置并退出，不常驻进程。
+`dsh --version` 应包含 `0.2.2-rc.3`。这条全局安装把主机上的 `dsh` 指到 haibo 文档已钉住的同一个 tip。`--from-default-profile web` 复制的是发行版里的 web 模板，然后 `--dump-config` 打印配置并退出，不常驻进程。
 
 确认 superagent 的用户层补丁里没有 haibo 标记块。默认 profile 的文件不要打开来改：
 
@@ -489,14 +489,14 @@ haibo 插件继续只治理默认家庭主机 profile。
 
 本仓库的 `desktop/` 是主机上的 macOS 窗口（WKWebView 交换本机启动 URL 的 cookie），不是「连接到远程 DSH」。上游有没有原生远程连接模式，审计未搜完，见待办 [UB-2](upstream-backlog.md)。现在能用的是浏览器打开主机公布的地址。
 
-在线名单和心跳上游没有（待办 [UB-3](upstream-backlog.md)）。自建中继也没有（待办 [UB-4](upstream-backlog.md)）。临时连通都跑在 DSH 外面，或只用 tag `dsh-v0.2.1-rc.5` 已经写明的旗标。本次没有在家庭网络里配过 Tailscale、Caddy 或 Cloudflare Tunnel。
+在线名单和心跳上游没有（待办 [UB-3](upstream-backlog.md)）。自建中继也没有（待办 [UB-4](upstream-backlog.md)）。临时连通都跑在 DSH 外面，或只用 tag `dsh-v0.2.2-rc.3` 已经写明的旗标。本次没有在家庭网络里配过 Tailscale、Caddy 或 Cloudflare Tunnel。
 
 持有签名 cookie 的人拥有这台主机上完整的工具能力。明文 HTTP 会把 cookie 送出去。远程访问要 TLS，加上反代或私人网络，并且在公开到互联网之前还有一层代理鉴权。启动 URL 里的 token 不要贴到仓库或聊天。详见 [设计红线](super-agent.md#red-lines) 与待办 [UB-1](upstream-backlog.md)。
 
 临时接法，三选一即可：
 
 - **Tailscale。** 主机和客户端进同一个 tailnet，浏览器打开主机在 tailnet 里的地址。DSH 仍要用 `--trusted-host` 放行浏览器实际使用的主机名。本文不把「进了 tailnet 就可以用明文 HTTP」写成已经验证的结论。更稳妥的是 tailnet 上仍用 HTTPS，并且不要把端口暴露到 tailnet 以外。
-- **反代加域名 TLS。** 按上游 [public-deployments](https://github.com/deepseek-ai/deepseek-harness/blob/dsh-v0.2.1-rc.5/docs/user/guide/public-deployments.md)。旗标出处是同一 tag 的 [CLI 参考](https://github.com/deepseek-ai/deepseek-harness/blob/dsh-v0.2.1-rc.5/apps/cli/reference/README.md)。`--public-url` 只公布地址，不授予信任。`--trusted-host` 才放行 Host/Origin。`--host` 必须是一个具体的本机地址；`0.0.0.0` 和 `::` 会报错退出。证书和私钥要成对：
+- **反代加域名 TLS。** 按上游 [public-deployments](https://github.com/deepseek-ai/deepseek-harness/blob/dsh-v0.2.2-rc.3/docs/user/guide/public-deployments.md)。旗标出处是同一 tag 的 [CLI 参考](https://github.com/deepseek-ai/deepseek-harness/blob/dsh-v0.2.2-rc.3/apps/cli/reference/README.md)。这份文档相对 `dsh-v0.2.1-rc.5` 没有 diff；CLI 参考有小改，`--public-url` / `--trusted-host` / `--host` 的含义还在。`--public-url` 只公布地址，不授予信任。`--trusted-host` 才放行 Host/Origin。`--host` 必须是一个具体的本机地址；`0.0.0.0` 和 `::` 会报错退出。证书和私钥要成对：
 
 反代终结 TLS 时，监听器可以仍是 HTTP。上游示例是：
 
@@ -520,7 +520,7 @@ dsh web --tls-cert ./server-chain.pem --tls-key ./server-key.pem
 
 装 haibo 的人在这台主机上逐条看。有一条对不上就停，不要继续开试验。
 
-- `dsh --version` 的输出里有 `0.2.1-rc.5`。
+- `dsh --version` 的输出里有 `0.2.2-rc.3`。
 - `node bin/install.mjs status` 里补丁是 `ACTIVE`，插件行没有 `MISSING`，UI bundle 是 `present`。
 - 默认 profile 的 `cordis.patch.yml` 里有 `# >>> dsh-muse (managed — do not edit between markers) >>>`。`superagent` 的补丁里没有 `dsh-muse`。还没建 `superagent` 时，跳过这一半。
 - 重启后的界面以 README「快速开始」为准。本次写文档没有看过一台重启后的界面。
