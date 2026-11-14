@@ -2,7 +2,7 @@
 
 官方 DSH 还没有、因而 **DSH-haibo** 只跟踪、不在本仓库里假装已经实现的能力。产品行为以 [家庭主机](home-host.md) 和 [Super Agent 设计](super-agent.md) 为准。本文不改 CI pin，不改安装器，不把原型并进标记块。
 
-对照版本：**DSH `0.2.1-rc.5`**，tag [`dsh-v0.2.1-rc.5`](https://github.com/deepseek-ai/deepseek-harness/tree/dsh-v0.2.1-rc.5)。原型只读参考是 [dsh-superagent-prototype@8c32a9d](https://github.com/deepseek-ai/dsh-superagent-prototype/commit/8c32a9dc5d72c033816c6a8110b37f40cf94fba4)。下面「rc.5 现状」里写「本次读过」的，是 2026-11-03 对着该 tag 的文件看的。写「审计未找到」的，来自同日审计；本次写文档没有把整棵上游树再扫一遍，刷新时要重做。
+对照版本：haibo 的当前 tip 是 **DSH `0.2.2-rc.3`**，tag [`dsh-v0.2.2-rc.3`](https://github.com/deepseek-ai/deepseek-harness/tree/dsh-v0.2.2-rc.3)。下面「rc.5 现状」里写「本次读过」的，仍是 2026-11-03 对着 tag `dsh-v0.2.1-rc.5` 的文件看的，这次对齐没有把整份审计重读一遍。`packages/client/connection/src/browser-auth.ts` 与 `packages/bundle/web-app/src/startup.ts` 在 `dsh-v0.2.1-rc.5`（`b830ec950faba0a46dda564be3e2d854afed94f1`）和 `dsh-v0.2.2-rc.3`（`38a6a5c965aa99ab525161efb7cc5cf1fe62fced`）之间没有 diff。原型只读参考是 [dsh-superagent-prototype@8c32a9d](https://github.com/deepseek-ai/dsh-superagent-prototype/commit/8c32a9dc5d72c033816c6a8110b37f40cf94fba4)。写「审计未找到」的，来自同日审计。
 
 2026-11-03 上游 force-push 了 `deepseek-ai/dsh-superagent-prototype` 的 `main`：HEAD 从 `6337fc823ce20251c8de8085948165c81aaa701e` 换成 `8c32a9dc5d72c033816c6a8110b37f40cf94fba4`，两边文件树相同（git tree `3efbb036e5a56183c6bf642e2e1856a1f64e7be3`，236 个条目）。
 
@@ -22,7 +22,7 @@
 `dsh-upstream-watch` 是这里规定的例行核对，不是本仓库里的 workflow 或脚本。本仓库没有这个名字的文件。
 
 - 时间：每周一、每周四。
-- 读 [deepseek-ai/deepseek-harness](https://github.com/deepseek-ai/deepseek-harness) 最新的 `0.2.1-rc.*` 发布说明和 tag（形如 `dsh-v0.2.1-rc.N`）。tip 要不要跟着改，是另一次决定。haibo CI 的 peer 现在钉在 `0.2.1-rc.5`，见 `.github/workflows/ci.yml` 的 plugin-behavior 作业。刷新文档时不要顺手改这些 pin。
+- 读 [deepseek-ai/deepseek-harness](https://github.com/deepseek-ai/deepseek-harness) 最新发布说明和 tag。从 `0.2.2` 起，haibo 跟每一个新 harness 发布。CI 的 peer 现在钉在 `0.2.2-rc.3`，见 `.github/workflows/ci.yml` 的 plugin-behavior 作业。刷新这份审计正文时不要顺手改 pin；改 pin 要单独对照接缝。
 - 在该 tag 上查看下面条目点名的路径。发布说明没提到的，用 tag 上的检索确认，不要用默认分支代替 tag。
 - 原型 pin 看 `dsh-superagent-prototype` 的 `package.json` 里 `@deepseek-ai/cordis` 与 `@deepseek-ai/schemastery`。试验继续只读 `8c32a9d`，直到另一次决定更换提交。
 - 有变化就改对应条目的「rc.5 现状」和文末变更表，并写上新的 tag。没有变化也在变更表留一行「无变化」即可，避免下次不知道上次看到哪。
@@ -162,11 +162,11 @@
 | 项 | 内容 |
 |---|---|
 | id | UB-9 |
-| 项 | 原型把 `@deepseek-ai/cordis` 与 `@deepseek-ai/schemastery` 钉在 `4.0.5-alpha.1` 与 `3.18.5-alpha.1`。haibo CI 用稳定版 `cordis@4.0.5`、`schemastery@3.18.5` |
-| 为什么要 | 隔离试验要把原型 link 进 `0.2.1-rc.5` 的 profile。alpha 精确版本和 CI 的 `~4.0.5` 对不上，面板可能报插件不兼容 |
-| 上游要提供的 | 原型改为接受 rc.5 已发布的那组 peer（cordis `~4.0.5`、schemastery `~3.18.5`），或 rc 线发布与原型相同的 alpha 并声明兼容。在那之前不要把 alpha 写进 haibo |
-| 现状 | 本次读过原型 `8c32a9d` 的 `package.json`：`@deepseek-ai/cordis` 为 `4.0.5-alpha.1`，`@deepseek-ai/schemastery` 为 `3.18.5-alpha.1`。haibo 侧见 [CI tip 与 cordis](home-host.md#ci-tip) 与 `.github/workflows/ci.yml`：`@deepseek-ai/cordis@4.0.5`、`@deepseek-ai/schemastery@3.18.5`，DSH 包为 `0.2.1-rc.5`。稳定版满足不了原型这两条精确 pin。试验接受破损 |
-| 临时做法 | 破损只留在隔离 `superagent` profile。不把 alpha cordis 塞进 haibo 标记块或 CI。tip 保持 `0.2.1-rc.5`，不追 `cordis@4.0.6-alpha.1`，不改成 `0.2.2-alpha` |
+| 项 | 原型把 `@deepseek-ai/cordis` 与 `@deepseek-ai/schemastery` 钉在 `4.0.5-alpha.1` 与 `3.18.5-alpha.1`。haibo CI 用稳定版 `cordis@4.1.0`、`schemastery@3.19.0` |
+| 为什么要 | 隔离试验要把原型 link 进当前 tip 的 profile。alpha 精确版本和 CI 的 `~4.1.0` 对不上，面板可能报插件不兼容 |
+| 上游要提供的 | 原型改为接受 `0.2.2-rc.3` 已发布的那组 peer（cordis `~4.1.0`、schemastery `~3.19.0`），或声明兼容。在那之前不要把 alpha 写进 haibo |
+| 现状 | 本次读过原型 `8c32a9d` 的 `package.json`：`@deepseek-ai/cordis` 为 `4.0.5-alpha.1`，`@deepseek-ai/schemastery` 为 `3.18.5-alpha.1`。haibo 侧见 [CI tip 与 cordis](home-host.md#ci-tip) 与 `.github/workflows/ci.yml`：`@deepseek-ai/cordis@4.1.0`、`@deepseek-ai/schemastery@3.19.0`，DSH 包为 `0.2.2-rc.3`。稳定版满足不了原型这两条精确 pin。试验接受破损。这次没有安装原型 |
+| 临时做法 | 破损只留在隔离 `superagent` profile。不把 alpha cordis 塞进 haibo 标记块或 CI。tip 跟 `0.2.2` 线，当前是 `0.2.2-rc.3` |
 | 怎么跟 | `dsh-upstream-watch` 看 DSH tag 的 peer；另看原型 `package.json`。两边对齐之前保持本条。对齐之后先改本文状态，再另开一次变更决定要不要动 CI |
 | 状态 | `workaround-in-place` |
 | 负责人 | Bruce |
@@ -175,4 +175,5 @@
 
 | 日期 | 对照 | 记录 |
 |---|---|---|
+| 2026-11-14 | DSH tag `dsh-v0.2.2-rc.3` | haibo tip 从 `0.2.1-rc.5` 改到 `0.2.2-rc.3`。UB-9 的 haibo 侧 pin 改成 cordis `4.1.0` / schemastery `3.19.0`。rc.5 正文里「本次读过」的文件没有整份重读。`browser-auth.ts` 与 `web-app/src/startup.ts` 相对 `dsh-v0.2.1-rc.5` 无 diff |
 | 2026-11-03 | DSH tag `dsh-v0.2.1-rc.5`；原型 `8c32a9dc5d72c033816c6a8110b37f40cf94fba4` | 初稿。写入 UB-1 至 UB-9。浏览器认证、CLI 反代旗标、subagent 默认值、原型 push 门与 cordis pin 本次读过源文件。桌面远程模式、presence、看门狗、duplicate-attach 测试正文、全双工是否等于文章设计，仍是待核对或未验证 |

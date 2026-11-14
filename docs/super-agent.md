@@ -83,7 +83,7 @@
 - 不碰其他仓库。明确永远不做 `aihw`、`yuanzhi`、`ai-sports`。
 - 不写入密钥，不把令牌放进 PR 正文或提交。
 - 不打开 auto-merge，不配置合并用的 CLI，不把 `eval.mode` 改成 `auto`，除非 Bruce 明确进入下面的阶段 2，并且即使到了阶段 2 也仍然不自动合并。
-- 不改 haibo 的标记块来挂原型，不改 CI 里的 cordis / schemastery pin（tip 保持 `0.2.1-rc.5`）。
+- 不改 haibo 的标记块来挂原型。haibo 的 CI tip 是 `0.2.2-rc.3`（cordis `4.1.0`、schemastery `3.19.0`）。不要为了原型把 alpha cordis 写回 CI。
 
 默认 profile 的护栏**挡不住**向 `main` 的普通 `git push`。`bin/manifest.mjs` 的 `ALLOW_GIT_PUSH_SAFE` 把非强制的 `git push`（README 写明包含 `git push origin main`）从「要审批」降成「入账后执行」。因此「禁止 push main」不能靠这块护栏。执行若将来发生，必须留在**没有** haibo 标记块的隔离 profile 里，并另有一条「目标分支不是 `main`、PR 是 draft」的检查。这条检查现在不存在。
 
@@ -107,12 +107,12 @@ rc.5 的浏览器认证（本次对照 tag `dsh-v0.2.1-rc.5` 读过）：
 | 在该仓库开 Draft PR | 阶段 1：Bruce 对那一条说可以之后。阶段 2：仅文档，且他事先同意进入阶段 2 | 每一次合并；是否进入阶段 2 | 任何阶段自动合并；向 `main` 推送；force push；其他仓库 |
 | 飞书或其他聊天 | 阶段 0 不接 | GitHub observe 已经健康，且只接他明确转来的会话 | 扫全部聊天；长期保存原始聊天；把密钥写进提案 |
 | 远程打开主机 UI | 本机 `127.0.0.1` | TLS + 反代或私人网络，公开前加代理鉴权 | 明文 HTTP 暴露到可达网络；转发启动 URL 或 cookie |
-| 改标记块、把原型拷进 `plugins/`、改 CI peer pin | 无 | 另一次他点头的代码变更 | 借本设计顺手改这些。tip 保持 `0.2.1-rc.5` |
+| 改标记块、把原型拷进 `plugins/` | 无 | 另一次他点头的代码变更 | 借本设计顺手挂原型。haibo tip 是 `0.2.2-rc.3`，不把原型的 alpha cordis 写进 CI |
 | 主机停机后在客户端继续执行 | 无 | 无 | 客户端自己当长期 DSH。约定见待办 UB-7 |
 
 ## 和现有试验的关系
 
-现有试验就是本设计的阶段 0，步骤在 [home-host 的主机安装](home-host.md#host-install)，样例在 [docs/trial/](trial/)。范围：只开 GitHub，`acceptMode` / `eval.mode` 为 `observe`，DSH **`0.2.1-rc.5`**（tag `dsh-v0.2.1-rc.5`），隔离 profile `superagent`，仓库只限 `smile-xuc/DSH-haibo`。原型 peer 与 haibo CI 的 cordis 不一致，破损只接受在试验里，见 [home-host 的 CI tip 与 cordis](home-host.md#ci-tip) 与待办 UB-9。
+现有试验就是本设计的阶段 0，步骤在 [home-host 的主机安装](home-host.md#host-install)，样例在 [docs/trial/](trial/)。范围：只开 GitHub，`acceptMode` / `eval.mode` 为 `observe`，DSH **`0.2.2-rc.3`**（tag `dsh-v0.2.2-rc.3`），隔离 profile `superagent`，仓库只限 `smile-xuc/DSH-haibo`。原型 peer 与 haibo CI 的 cordis 不一致，破损只接受在试验里，见 [home-host 的 CI tip 与 cordis](home-host.md#ci-tip) 与待办 UB-9。这次没有安装原型，也没有在 `0.2.2-rc.3` 上重跑试验。
 
 | 阶段 | 行为 | 谁打开 |
 |---|---|---|
