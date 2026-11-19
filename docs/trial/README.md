@@ -15,4 +15,4 @@
 | [profile.cordis.patch.example.yml](profile.cordis.patch.example.yml) | 盖住 `superagent` 的 `cordis.patch.yml`。飞书条目保持注释 |
 | [settings.observe.example.json](settings.observe.example.json) | 管理 API 要写入的 GitHub Source 与 `eval.mode`。`cli` 在主机上换成 `gh-agent` 的绝对路径 |
 
-对照的上游提交是 [`8c32a9dc5d72c033816c6a8110b37f40cf94fba4`](https://github.com/deepseek-ai/dsh-superagent-prototype/commit/8c32a9dc5d72c033816c6a8110b37f40cf94fba4)（`deepseek-ai/dsh-superagent-prototype` 的 `main`，写这份手册时）。家庭主机上的 DSH tip 是 **`0.2.2-rc.3`**（tag `dsh-v0.2.2-rc.3`），不用原型 `SETUP.md` 示例里的 `0.2.1-rc.3`。原型 `engines.dsh` 的 `^0.2.1-alpha.2` 不包含 `0.2.2-rc.3`；这次没有安装原型，也没有在新 tip 上重跑试验。
+对照的上游提交是 [`8c32a9dc5d72c033816c6a8110b37f40cf94fba4`](https://github.com/deepseek-ai/dsh-superagent-prototype/commit/8c32a9dc5d72c033816c6a8110b37f40cf94fba4)（`deepseek-ai/dsh-superagent-prototype` 的 `main`，写这份手册时）。家庭主机上的 DSH tip 是 **`0.2.2-rc.5`**（tag `dsh-v0.2.2-rc.5`），不用原型 `SETUP.md` 示例里的 `0.2.1-rc.3`。原型 `engines.dsh` 的 `^0.2.1-alpha.2` 不包含 `0.2.2-rc.5`；这次没有安装原型，也没有在新 tip 上重跑试验。
